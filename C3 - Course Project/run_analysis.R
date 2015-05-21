@@ -1,14 +1,16 @@
 ###############################################################################
 ## Install and load required libraries
 ###############################################################################
-if (!("plyr" %in% rownames(installed.packages())))
-{
-    #install.packages("plyr")
-    #library(plyr)
+if (!("vd" %in% rownames(installed.packages())))
+{   
+    # for join_all
+    install.packages("plyr")
+    library(plyr)
 }
 
 if (!("dplyr" %in% rownames(installed.packages())))
 {
+    # for summarise_each and group_by
     install.packages("dplyr")
     library(dplyr)
 }
@@ -25,7 +27,6 @@ train_set <- read.table("./UCI HAR Dataset/train/X_train.txt")
 ## merge test data
 data_set <- rbind(test_set, train_set)
 
-
 ###############################################################################
 ## Extracts only the measurements on the mean and standard deviation for each measurement
 ###############################################################################
@@ -33,13 +34,11 @@ data_set <- rbind(test_set, train_set)
 labels <- read.table("./UCI HAR Dataset/features.txt")
 
 # find labels to keep or to remove from data set 
-##selected_labels <- filter(labels, grepl("mean", labels$V2) | grepl("std", labels$V2))
 unselected_labels <- labels[!(grepl("mean", labels$V2) | grepl("std", labels$V2)),]
 selected_labels <- labels[(grepl("mean", labels$V2) | grepl("std", labels$V2)),]
 
 #remove unselected labels from data set
 data_set <- data_set[-c(t(unselected_labels[1]))]
-
 
 ###############################################################################
 ## Uses descriptive activity names to name the activities in the data set
