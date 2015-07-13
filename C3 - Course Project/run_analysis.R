@@ -16,6 +16,13 @@ if (!("dplyr" %in% rownames(installed.packages())))
 }
 
 ###############################################################################
+## Download and unzip data set files
+###############################################################################
+url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+download.file(url, destfile = "UCI_HAR_Dataset.zip")
+unzip("UCI_HAR_Dataset.zip")
+
+###############################################################################
 ## Merges the training and the test sets to create one data set
 ###############################################################################
 ## load test data
@@ -76,4 +83,4 @@ data_set <- cbind(subjects_set, activity_set, data_set)
 ## for each activity and each subject
 ###############################################################################
 tidy_data_set <- data_set %>% group_by(User, Activity) %>% summarise_each(funs(mean))
-write.table(tidy_data_set, "./tidy_data_set.txt")
+write.table(tidy_data_set, "./tidy_data_set.txt", row.name=FALSE)
